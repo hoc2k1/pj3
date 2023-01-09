@@ -6,6 +6,6 @@ module.exports = {
     onSignIn: null,
     gotoSearch: null,
     setArraySearch: null,
-    cartNumber: 0,
+    cartChange: null,
     user: null
 };

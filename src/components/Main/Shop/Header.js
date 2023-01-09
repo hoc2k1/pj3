@@ -44,7 +44,7 @@ export default class Header extends Component {
                         <Image source={icMenu} style={iconStyle} />
                     </TouchableOpacity>
                     <Text style={titleStyle}>Welcome</Text>
-                    <Image source={icLogo} style={iconStyle} />
+                    <View></View>
                 </View>
                 <TextInput 
                     style={textInput}

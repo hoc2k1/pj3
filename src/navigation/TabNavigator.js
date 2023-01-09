@@ -8,9 +8,30 @@ import Search from '../components/Main/Shop/Search/Search';
 import Cart from '../components/Main/Shop/Cart/Cart';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Setting from '../config/setting';
+import getCart from '../api/getCart';
+import getToken from '../api/getToken';
+import checkLogin from '../api/checkLogin';
+import getItemFromCart from '../api/getItemFromCart';
 
 const Tab = createBottomTabNavigator();
-const BottomTabNavigator = () => {
+const BottomTabNavigator = (props) => {
+  const[token, setToken] = React.useState(null);
+  const[id_bill, setId_bill] = React.useState(null);
+  const[cart, setCart] = React.useState(null);
+
+  React.useEffect(() => {
+    console.log('a')
+      getToken()
+      .then(token => [(token ? setToken(token): [setToken(null), setId_bill(null), setCart(null)]), checkLogin(token)
+        .then(res => res ? getCart(res.user.email)
+            .then(res => [console.log(res), setId_bill(res.id), getItemFromCart(res.id)
+                .then(ress => setCart(ress))
+                .catch(errr => console.log(errr))])
+            // .then(res => console.log(res))
+            .catch(err => console.log(err)) : null)
+        .catch(err => console.log('LOI CHECK LOGIN', err)) ]);
+      console.log(cart)
+  },[props, props.navigation])
   return (
     <Tab.Navigator screenOptions={{headerShown: false}}>
       <Tab.Screen
@@ -28,7 +49,7 @@ const BottomTabNavigator = () => {
         component={Cart}
         options={({route}) => ({
           tabBarActiveTintColor: Setting.theme_color,
-          tabBarBadge: null,
+          tabBarBadge: cart && cart.length,
           tabBarIcon: ({ color, size}) => {
             return <Icon name='cart' color={color} size={size} />;
           },

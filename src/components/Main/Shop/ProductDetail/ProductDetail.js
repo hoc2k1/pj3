@@ -1,19 +1,80 @@
 import React, { Component } from 'react';
 import { 
-    View, Text, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity 
+    View, Text, StyleSheet, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid
 } from 'react-native';
+import { Toast } from 'native-base';
 import Setting from '../../../../config/setting';
 import global from '../../../global';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import addToCart from '../../../../api/addToCart'
+import getCart from '../../../../api/getCart';
+import getToken from '../../../../api/getToken';
+import checkLogin from '../../../../api/checkLogin';
+import getItemFromCart from '../../../../api/getItemFromCart';
 
 const url = `${Setting.url}images/product/`;
 
 export default class ProductDetail extends Component {
     constructor(props){
         super(props)
+        this.state ={
+            token: null,
+            cart: null,
+            id_bill: null,
+        }
+        // getToken()
+        // .then(token => [(token ? this.setState({token: token}): null), checkLogin(this.state.token)
+        //     .then(res => [res ? this.setState({user: res.user}) : null, getCart(this.state.user.email)
+        //         .then(res => getItemFromCart(res.id)
+        //             .then(ress => console.log(ress))
+        //             .catch(errr => console.log(errr)))
+        //         // .then(res => console.log(res))
+        //         .catch(err => console.log(err))])
+        //     .catch(err => console.log('LOI CHECK LOGIN', err)) ]);
+        
     }
+
+    componentDidMount(){
+        getToken()
+        .then(token => [(token ? this.setState({token: token}): null), checkLogin(this.state.token)
+            .then(res => res ? getCart(res.user.email)
+                .then(res => [this.setState({id_bill: res.id}), getItemFromCart(res.id)
+                    .then(ress => this.setState({cart: ress}))
+                    .catch(errr => console.log(errr))])
+                // .then(res => console.log(res))
+                .catch(err => console.log(err)) : null)
+            .catch(err => console.log('LOI CHECK LOGIN', err)) ]);
+    }
+
+    showToastWithGravity = (text) => {
+        ToastAndroid.showWithGravity(
+          text,
+          ToastAndroid.SHORT,
+          ToastAndroid.TOP
+        );
+      };
     addThisProductToCart(product) {
-        global.addProductToCart(product);
+        if(this.state.token){
+            let checkDuplicate = false;
+            this.state.cart?.map((item, index) => {
+                if(item.id_product == product.id) checkDuplicate = true
+            })
+            if(checkDuplicate) {
+                this.showToastWithGravity('This product is already in your cart')
+            }
+            else {
+                addToCart(this.state.id_bill, product.id, product.price)
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+                this.showToastWithGravity('Product added to cart successfully')
+                getItemFromCart(this.state.id_bill)
+                    .then(ress => this.setState({cart: ress}))
+                    .catch(errr => console.log(errr))
+            }
+        }
+        else{
+            this.showToastWithGravity('You are not logged in')
+        }
     }
     render() {
         const {
@@ -31,8 +92,13 @@ export default class ProductDetail extends Component {
                         <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
                             <Ionicons name='chevron-back' color={Setting.theme_color} size={30}/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.addThisProductToCart(this.props.route.params.product)}>
+                        <TouchableOpacity style={{ position: 'relative', height: 30, width: 30 }} onPress={() => this.addThisProductToCart(this.props.route.params.product)}>
                             <Ionicons name='cart' color={Setting.theme_color} size={30}/>
+                            {this.state.cart ? (
+                                <View style={{ position: 'absolute', top: 0, right: 0, height: 17, width: 17, borderRadius: 99, backgroundColor: 'red', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+                                    <Text style={{ color: 'white', textAlign: 'center' }}>{this.state.cart.length}</Text>
+                                </View>
+                            ): null}
                         </TouchableOpacity>
                     </View>
                     <View style={imageContainer}>
