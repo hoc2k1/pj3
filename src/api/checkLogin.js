@@ -10,7 +10,7 @@ const checkLogin = (token) => (
         },
         body: JSON.stringify({ token })
     })
-    .then(res => res.text())
+    .then(res => res.json())
 );
 
 module.exports = checkLogin;

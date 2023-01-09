@@ -27,15 +27,15 @@ export default class Main extends Component {
         global.incrQuantity = this.incrQuantity.bind(this);
         global.decrQuantity = this.decrQuantity.bind(this);
         global.removeProduct = this.removeProduct.bind(this);
-        getToken()
-        .then(token => [(token ? this.setState({token: token}): null), checkLogin(this.state.token)
-            .then(res => [res ? this.setState({user: res.user}) : null, getCart(this.state.user.email)
-                .then(res => getItemFromCart(res.id)
-                    .then(ress => console.log(ress))
-                    .catch(errr => console.log(errr)))
-                // .then(res => console.log(res))
-                .catch(err => console.log(err))])
-            .catch(err => console.log('LOI CHECK LOGIN', err)) ]);
+        // getToken()
+        // .then(token => [(token ? this.setState({token: token}): null), checkLogin(this.state.token)
+        //     .then(res => [res ? this.setState({user: res.user}) : null, getCart(this.state.user.email)
+        //         .then(res => getItemFromCart(res.id)
+        //             .then(ress => console.log(ress))
+        //             .catch(errr => console.log(errr)))
+        //         // .then(res => console.log(res))
+        //         .catch(err => console.log(err))])
+        //     .catch(err => console.log('LOI CHECK LOGIN', err)) ]);
     }
 
     async fetchHomeData() {
