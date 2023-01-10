@@ -52,7 +52,7 @@ export default class ListProduct extends Component {
         } = styles;
         let name = this.toTitleCase(item.item.name)
         return(
-            <TouchableOpacity style={productContainer} onPress={() => this.props.navigation.navigate('ProductDetail' , { product: item.item })}>
+            <TouchableOpacity activeOpacity={0.7} style={productContainer} onPress={() => this.props.navigation.navigate('ProductDetail' , { product: item.item })}>
                 <View style={{ padding: 5 }}>
                     <Image source={{ uri: `${url}${item.item.images[0]}` }} style={productImage} />
                     <Text style={productName}>{name}</Text>

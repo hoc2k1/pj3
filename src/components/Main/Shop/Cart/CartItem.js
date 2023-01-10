@@ -56,7 +56,7 @@ export default class CartItem extends React.Component {
                         <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                             <Text style={txtName}>{this.state.product && this.toTitleCase(this.state.product?.name)}</Text>
                             <TouchableOpacity onPress={() => this.deleteItem(item.id)}>
-                                <Text style={{ fontFamily: 'Avenir', color: '#969696' }}>X</Text>
+                                <Text style={{ fontSize: 20, color: '#969696' }}>X</Text>
                             </TouchableOpacity>
                         </View>
                         <View>
@@ -67,11 +67,11 @@ export default class CartItem extends React.Component {
                                 <TouchableOpacity 
                                     onPress={() => [this.setState({qty: this.state.qty -1, price: parseInt(this.state.price) - parseInt(this.state.product.price)}), this.props.parent.update_cart(item.id, this.state.qty-1, parseInt(this.state.price) - parseInt(this.state.product.price) )]}
                                     disabled={this.state.qty == 1 ? true : false}>
-                                    <Text style={{ color: 'black' }}>-</Text>
+                                    <Text style={{ color: 'black', fontSize: 18, padding: 5 }}>-</Text>
                                 </TouchableOpacity>
                                 <Text style={{ color: 'black' }}>{this.state.qty}</Text>
                                 <TouchableOpacity onPress={() => [this.setState({qty: this.state.qty + 1, price: parseInt(this.state.price) + parseInt(this.state.product.price)}), this.props.parent.update_cart(item.id, this.state.qty+1, parseInt(this.state.price) + parseInt(this.state.product.price) )]}>
-                                    <Text style={{ color: 'black' }}>+</Text>
+                                    <Text style={{ color: 'black', fontSize: 18, padding: 5 }}>+</Text>
                                 </TouchableOpacity>
                             </View>
                             <TouchableOpacity style={showDetailContainer} onPress={() => this.props.parent.props.navigation.navigate('ProductDetail' , { product: this.state.product })}>
@@ -103,14 +103,10 @@ const styles = StyleSheet.create({
         elevation: 6,
         borderRadius: 10,
         flexDirection: 'row',
-        marginTop: 10,
         marginHorizontal: 10,
         padding: 10,
         backgroundColor: '#FFFFFF',
-        borderRadius: 2,
-        shadowColor: '#3B5458',
-        shadowOffset: { width: 0, height: 3 },
-        shadowOpacity: 0.2
+        marginBottom: 15
     },
     productImage: {
         width: imageWidth,
@@ -132,27 +128,25 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8, 
         marginLeft: 20,
-        borderColor: '#A7A7A7'
+        borderColor: '#A7A7A7',
+        alignItems: 'center'
     },
     txtName: {
         paddingLeft: 20,
-        color: '#A7A7A7',
+        color: Setting.productName_color,
         fontSize: 20,
         fontWeight: '400',
-        fontFamily: 'Avenir'
     },
     txtPrice: {
         paddingLeft: 20,
-        color: '#C21C70',
+        color: Setting.productPrice_color,
         fontSize: 20,
         fontWeight: '400',
-        fontFamily: 'Avenir'
     },
     txtShowDetail: {
         color: '#C21C70',
         fontSize: 10,
         fontWeight: '400',
-        fontFamily: 'Avenir',
         textAlign: 'right',
     },
     showDetailContainer: {

@@ -71,8 +71,11 @@ export default class Cart extends Component {
 
     render() {
         const { checkoutButton, checkoutTitle, wrapper } = styles;
+        let total = 0;
         // const arrTotal = cartArray.map(e => e.product.price * e.quantity);
-        // const total = arrTotal.length ? arrTotal.reduce((a, b) => a + b) : 0;
+        this.state.cart?.length > 0 ? this.state.cart.map((item, index) => {
+            total += parseInt(item.price);
+        }) : null;
         return (
             <View style={wrapper}>
                 <FlatList
@@ -82,7 +85,7 @@ export default class Cart extends Component {
                     renderItem={(item) => this.renderItem(item)}
                 />
                 <TouchableOpacity style={checkoutButton}>
-                    <Text style={checkoutTitle}>TOTAL$ CHECKOUT NOW</Text>
+                    <Text style={checkoutTitle}>TOTAL {total}$ CHECKOUT NOW</Text>
                 </TouchableOpacity>
             </View>
         );
@@ -97,6 +100,7 @@ const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
         // backgroundColor: '#DFDFDF'
+        marginTop: 10
     },
     checkoutButton: {
         height: 50,
@@ -111,6 +115,5 @@ const styles = StyleSheet.create({
         color: '#FFF',
         fontSize: 15,
         fontWeight: 'bold',
-        fontFamily: 'Avenir'
     },
 });

@@ -2,11 +2,14 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import Icon from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import Main from '../components/Main/Main';
 import Contact from '../components/Main/Shop/Contact/Contact';
 import Search from '../components/Main/Shop/Search/Search';
 import Cart from '../components/Main/Shop/Cart/Cart';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Category from '../components/Main/Shop/Home/Category';
+import Menu from '../components/Main/Menu';
 import Setting from '../config/setting';
 import getCart from '../api/getCart';
 import getToken from '../api/getToken';
@@ -45,6 +48,16 @@ const BottomTabNavigator = (props) => {
         })}
       />
       <Tab.Screen
+        name="Category"
+        component={Category}
+        options={({route}) => ({
+          tabBarActiveTintColor: Setting.theme_color,
+          tabBarIcon: ({ color, size}) => {
+            return <MaterialIcons name='category' color={color} size={size} />;
+          },
+        })}
+      />
+      <Tab.Screen
         name="Cart"
         component={Cart}
         options={({route}) => ({
@@ -71,7 +84,17 @@ const BottomTabNavigator = (props) => {
         options={({route}) => ({
           tabBarActiveTintColor: Setting.theme_color,
           tabBarIcon: ({ color, size}) => {
-            return <FontAwesome name='phone' color={color} size={size} />;
+            return <MaterialIcons name='contact-phone' color={color} size={size} />;
+          },
+        })}
+      />
+      <Tab.Screen
+        name="My Account"
+        component={Menu}
+        options={({route}) => ({
+          tabBarActiveTintColor: Setting.theme_color,
+          tabBarIcon: ({ color, size}) => {
+            return <FontAwesome5 name='user-circle' color={color} size={size} />;
           },
         })}
       />

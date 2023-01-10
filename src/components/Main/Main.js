@@ -23,10 +23,6 @@ export default class Main extends Component {
             user: null,
             token: null,
         }
-        global.addProductToCart = this.addProductToCart.bind(this);
-        global.incrQuantity = this.incrQuantity.bind(this);
-        global.decrQuantity = this.decrQuantity.bind(this);
-        global.removeProduct = this.removeProduct.bind(this);
         // getToken()
         // .then(token => [(token ? this.setState({token: token}): null), checkLogin(this.state.token)
         //     .then(res => [res ? this.setState({user: res.user}) : null, getCart(this.state.user.email)
@@ -91,10 +87,10 @@ export default class Main extends Component {
     render() {
         return (
             <View style={{flexDirection: 'column', paddingBottom: 90}}>
-                <Header navigation={this.props.navigation}/>
+                <Header navigation={this.props.navigation} route={this.props.route.name}/>
                 <ScrollView>
                     <Collection navigation={this.props.navigation} />
-                    <Category navigation={this.props.navigation} type={this.state.type}/>
+                    {/* <Category navigation={this.props.navigation} type={this.state.type}/> */}
                     <New navigation={this.props.navigation} product={this.state.topProducts}/>
                 </ScrollView>
             </View>

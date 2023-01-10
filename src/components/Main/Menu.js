@@ -59,7 +59,8 @@ export default class Menu extends React.Component {
                         <Text style={{ textAlign: 'center', marginTop: 30, marginBottom: 30, fontSize: 20, color: 'black' }}>Are you sure want to sign out?</Text>
                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center'}}>
                             <TouchableOpacity
-                                onPress={() => [this.setState({signOutModal : false}), this.onSignOut(), this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('Authentication')]} 
+                                // onPress={() => [this.setState({signOutModal : false}), this.onSignOut(), this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('Authentication')]} 
+                                onPress={() => [this.setState({signOutModal : false}), this.onSignOut(), this.props.navigation.navigate('Authentication')]} 
                                 style= {{width: '40%', height: 50, borderWidth: 3, borderColor: Setting.theme_color, borderRadius: 10, alignItems: 'center', backgroundColor: Setting.theme_color, justifyContent: 'center' }}>
                                 <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Yes</Text>
                             </TouchableOpacity>
@@ -84,7 +85,8 @@ export default class Menu extends React.Component {
             <View style={{ flex: 1 }}>
                 <TouchableOpacity 
                     style={btnStyle} 
-                    onPress={() => [this.props.data.setState({modalVisible: false}) ,this.props.navigation.navigate('Authentication')] }>
+                    // onPress={() => [this.props.data.setState({modalVisible: false}) ,this.props.navigation.navigate('Authentication')] }>
+                    onPress={() => this.props.navigation.navigate('Authentication')}>
                     <Text style={btnText}>Sign In</Text>
                 </TouchableOpacity>
             </View>
@@ -92,11 +94,13 @@ export default class Menu extends React.Component {
         const loginJSX = (
             <View style={loginContainer}>
                 <Text style={username}>{this.state.user ? this.state.user.name : ''}</Text>
-                <View>
-                    <TouchableOpacity style={btnSignInStyle} onPress={() => [this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('OrderHistory')]}>
+                <View style={{ marginTop: 40 }}>
+                    {/* <TouchableOpacity style={btnSignInStyle} onPress={() => [this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('OrderHistory')]}> */}
+                    <TouchableOpacity style={btnSignInStyle} onPress={() => this.props.navigation.navigate('OrderHistory')}>
                         <Text style={btnTextSignIn}>Order History</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={btnSignInStyle} onPress={() => [this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('ChangeInfo', {user: this.state.user})]}>
+                    {/* <TouchableOpacity style={btnSignInStyle} onPress={() => [this.props.data.setState({modalVisible: false}), this.props.navigation.navigate('ChangeInfo', {user: this.state.user})]}> */}
+                    <TouchableOpacity style={btnSignInStyle} onPress={() => this.props.navigation.navigate('ChangeInfo', {user: this.state.user})}>
                         <Text style={btnTextSignIn}>Change Info</Text>
                     </TouchableOpacity>
                     <TouchableOpacity 
@@ -147,22 +151,23 @@ const styles = StyleSheet.create({
         backgroundColor: Setting.theme_color,
         height: 50,
         borderRadius: 5,
-        width: 200,
-        marginBottom: 10,
+        width: 250,
+        marginBottom: 15,
         justifyContent: 'center',
-        paddingLeft: 10
+        // paddingLeft: 10
+        alignItems: 'center',
     },
     btnTextSignIn: {
         color: 'white',
-        fontSize: 15
+        fontSize: 20
     },
     loginContainer: {
         flex: 1, 
-        justifyContent: 'space-between', 
+        // justifyContent: 'space-between', 
         alignItems: 'center'
     },
     username: {
         color: Setting.theme_color, 
-        fontSize: 15
+        fontSize: 26
     }
 });

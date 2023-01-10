@@ -34,7 +34,7 @@ export default class SignIn extends Component {
                 else {
                     let obj = JSON.parse(res);
                     global.onSignIn(obj.user);
-                    this.props.navigation.goBack();
+                    this.props.navigation.navigate('Home');
                     saveToken(obj.token);
                 }
             })

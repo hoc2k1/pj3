@@ -1,3 +1,4 @@
+import { NativeBaseProvider, ScrollView } from 'native-base';
 import React, { Component } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, ImageBackground } from 'react-native';
 import Swiper from 'react-native-swiper';
@@ -6,32 +7,48 @@ import Setting from '../../../../config/setting';
 
 const url = `${Setting.url}images/type/`;
 
-const { width } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default class Category extends Component {
+    constructor(props){
+        super(props)
+        this.state={
+            cate: []
+        }
+    }
+
+    async fetchHomeData() {
+        console.log(Setting.url)
+        const response = await fetch(Setting.url);
+        const json = await response.json();
+        this.setState({
+            cate: json.type,
+        })
+    }
+    componentDidMount(){
+        this.fetchHomeData();
+    }
+
     renderItem(item){
-        console.log(item)
         return(
-            <TouchableOpacity onPress={() => this.props.navigation.navigate('ListProduct', {category: item})} >
-                <ImageBackground source={{ uri: `${url}${item.image}` }} style={styles.imageStyle}>
-                <Text style={{ color: 'black', textAlign: 'center', fontSize: 18,}}>{item.name}</Text>
-                </ImageBackground>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => this.props.navigation.navigate('ListProduct', {category: item})} >
+                <View style={styles.wrapper}>
+                    <ImageBackground source={{ uri: `${url}${item.image}` }} style={styles.imageStyle}>
+                    <Text style={{ color: 'black', textAlign: 'center', fontSize: 18,}}>{item.name}</Text>
+                    </ImageBackground>
+                </View>
             </TouchableOpacity>
         )
     }
     render() {
-        const { wrapper, textStyle, } = styles;
         return (
-            <View style={wrapper}>
-                <View style={{ justifyContent: 'center', height: 50 }}>
-                    <Text style={textStyle} >LIST OF CATEGORY</Text>
+            <NativeBaseProvider >
+                <View style={{ height: height - 40, paddingTop: 20, paddingBottom: 10}}>
+                    <ScrollView>
+                        {this.state.cate.map(item =>this.renderItem(item))}
+                    </ScrollView>
                 </View>
-                <View style={{ justifyContent: 'flex-end', flex: 4 }}>
-                    <Swiper showsPagination width={imageWidth} height={imageHeight} autoplay autoplayTimeout={10}>
-                        {this.props.type.map(item =>this.renderItem(item))}
-                    </Swiper>
-                </View>
-            </View>
+            </NativeBaseProvider>
         );
     }
 }
@@ -42,10 +59,10 @@ const imageHeight = imageWidth / 2;
 const styles = StyleSheet.create({
     wrapper: {
         width: width - 20,
-        height: imageHeight + 60,
+        height: imageHeight + 20,
         backgroundColor: '#FFF',
         margin: 10,
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -58,7 +75,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         paddingTop: 0,
-        marginTop: 0
+        marginTop: 0,
+        alignItems: 'center'
     },
     textStyle: {
         fontSize: 20,
@@ -69,6 +87,7 @@ const styles = StyleSheet.create({
         width: imageWidth,
         alignItems: 'center',
         borderRadius: 10,
+        marginTop: 10
     },
     cateTitle: {
         fontSize: 20,

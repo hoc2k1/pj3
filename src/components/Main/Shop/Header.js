@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { 
-    View, Text, TouchableOpacity, Image, Dimensions, TextInput, StyleSheet, Modal 
+    View, Text, TouchableOpacity, Image, Dimensions, TextInput, StyleSheet, Modal, Keyboard 
 } from 'react-native';
-// import global from '../../global';
-import icLogo from '../../../media/appIcon/ic_logo.png';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import icMenu from '../../../media/appIcon/ic_menu.png';
 import Menu from '../Menu'
 import Setting from '../../../config/setting';
@@ -12,11 +11,19 @@ const { height } = Dimensions.get('window');
 
 export default class Header extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
             txtSearch: '',
             modalVisible: false,
         };
+    }
+
+    search(txt){
+        Keyboard.dismiss();
+        this.props.navigation.navigate('Search', {txt: txt})
+    }
+    componentWillReceiveProps(nextProps){
+        this.setState({txtSearch: nextProps.txt})
     }
     
     showMenu() {
@@ -40,28 +47,39 @@ export default class Header extends Component {
         return (
             <View style={wrapper}>
                 <View style={row1}>
-                    <TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
+                    {/* <TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
                         <Image source={icMenu} style={iconStyle} />
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
+                    <View></View>
                     <Text style={titleStyle}>Welcome</Text>
                     <View></View>
                 </View>
-                <TextInput 
-                    style={textInput}
-                    placeholder="What do you want to buy?"
-                    placeholderTextColor='gray'
-                    underlineColorAndroid="transparent"
-                    value={this.state.txtSearch}
-                    onChangeText={text => this.setState({ txtSearch: text })}
-                    // onFocus={() => global.gotoSearch()} 
-                    // onSubmitEditing={this.onSearch.bind(this)}
-                />
-                <Modal 
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    <TextInput 
+                        style={textInput}
+                        placeholder="What do you want to buy?"
+                        placeholderTextColor='gray'
+                        underlineColorAndroid="transparent"
+                        value={this.state.txtSearch}
+                        // defaultValue={this.state.txtSearch}
+                        onChangeText={text => this.setState({ txtSearch: text })}
+                        onBlur={() => Keyboard.dismiss()}
+                        // onFocus={() => global.gotoSearch()} 
+                        // onSubmitEditing={this.onSearch.bind(this)}
+                    />
+                    <TouchableOpacity
+                        activeOpacity={0.8} 
+                        onPress={() => this.search(this.state.txtSearch)}
+                        style={{backgroundColor: 'white', borderTopRightRadius: 5, borderBottomRightRadius: 5,}}>
+                        <FontAwesome style={{ paddingHorizontal: 10 }} name='search' size={26} color={Setting.theme_color}/>
+                    </TouchableOpacity>
+                </View>
+                {/* <Modal 
                     visible={this.state.modalVisible} 
                     animationType="fade"
                     transparent={true}>
                     {this.showMenu()}
-                </Modal>
+                </Modal> */}
             </View>
         );
     }
@@ -77,7 +95,10 @@ const styles = StyleSheet.create({
     row1: { flexDirection: 'row', justifyContent: 'space-between' },
     textInput: { 
         color: 'black',
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
         height: height / 23, 
+        width: '80%',
         backgroundColor: '#FFF', 
         paddingLeft: 10,
         paddingVertical: 0 
