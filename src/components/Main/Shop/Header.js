@@ -43,9 +43,10 @@ export default class Header extends Component {
     }
 
     render() {
+        console.log(this.props)
         const { wrapper, row1, textInput, iconStyle, titleStyle } = styles;
         return (
-            <View style={wrapper}>
+            <View style={[wrapper, {height: this.props.route == "Home" ? height/12 : height/8}]}>
                 <View style={row1}>
                     {/* <TouchableOpacity onPress={() => this.setState({modalVisible: true})}>
                         <Image source={icMenu} style={iconStyle} />
@@ -54,13 +55,14 @@ export default class Header extends Component {
                     <Text style={titleStyle}>Welcome</Text>
                     <View></View>
                 </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                {this.props.route == "Home" ? null : (<View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <TextInput 
                         style={textInput}
                         placeholder="What do you want to buy?"
                         placeholderTextColor='gray'
                         underlineColorAndroid="transparent"
                         value={this.state.txtSearch}
+                        onSubmitEditing={() => {this.search(this.state.txtSearch)}}
                         // defaultValue={this.state.txtSearch}
                         onChangeText={text => this.setState({ txtSearch: text })}
                         onBlur={() => Keyboard.dismiss()}
@@ -73,7 +75,7 @@ export default class Header extends Component {
                         style={{backgroundColor: 'white', borderTopRightRadius: 5, borderBottomRightRadius: 5,}}>
                         <FontAwesome style={{ paddingHorizontal: 10 }} name='search' size={26} color={Setting.theme_color}/>
                     </TouchableOpacity>
-                </View>
+                </View>)}
                 {/* <Modal 
                     visible={this.state.modalVisible} 
                     animationType="fade"
@@ -87,7 +89,6 @@ export default class Header extends Component {
 
 const styles = StyleSheet.create({
     wrapper: { 
-        height: height / 8, 
         backgroundColor: Setting.theme_color, 
         padding: 10, 
         justifyContent: 'space-around' 

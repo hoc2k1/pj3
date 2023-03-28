@@ -23,6 +23,14 @@ export default class Menu extends React.Component {
             .catch(err => console.log('LOI CHECK LOGIN', err)) : null)
         .catch(err => console.log(err))
     }
+    componentDidUpdate(prevProps){
+        if(this.props != prevProps)
+        getToken()
+        .then(token => token ? checkLogin(token)
+            .then(res => [console.log(res.user), res ? this.setState({user: res.user}) : null])
+            .catch(err => console.log('LOI CHECK LOGIN', err)) : null)
+        .catch(err => console.log(err))
+    }
 
     onSignIn(data) {
         this.setState({ user: data })

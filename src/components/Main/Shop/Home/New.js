@@ -1,3 +1,4 @@
+import { convertAbsoluteToRem } from 'native-base/lib/typescript/theme/v33x-theme/tools';
 import React, { Component } from 'react';
 import { 
     View, Text, Image, StyleSheet, Dimensions, TouchableOpacity, FlatList 
@@ -15,7 +16,7 @@ export default class New extends Component {
         return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
     }
     
-    renderItem(item) {        
+    renderItem(item) {       
         const{
             productName, productImage, productPrice,
             productContainer

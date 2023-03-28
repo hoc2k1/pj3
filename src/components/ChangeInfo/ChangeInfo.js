@@ -23,7 +23,7 @@ export default class ChangeInfo extends Component {
             'Notice',
             'Change Infomation successfully',
             [
-                { text: 'OK', onPress: () => this.props.navigation.goBack() }
+                { text: 'OK', onPress: () => this.props.navigation.navigate('My Account', {tmp: 1}) }
             ],
             { cancelable: false }
         );
@@ -32,7 +32,7 @@ export default class ChangeInfo extends Component {
     changeInfo() {
         const { txtEmail, txtName, txtAddress, txtPhone } = this.state;
         changeInfo(txtEmail, txtName, txtPhone, txtAddress )
-        .then(res => this.onSuccess())
+        .then(res => [console.log(res), this.onSuccess()])
         .catch(err => console.log(err))
     }
 

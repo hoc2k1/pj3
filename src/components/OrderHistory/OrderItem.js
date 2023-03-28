@@ -1,19 +1,19 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, Dimensions, Alert, ToastAndroid } from 'react-native'
 import { Card, NativeBaseProvider } from 'native-base'
-import getProductById from '../../../../api/getProductById';
-import Setting from '../../../../config/setting';
+import getProductById from '../../api/getProductById';
+import Setting from '../../config/setting';
 
 const url = `${Setting.url}images/product/`;
-export default class CartItem extends React.Component {
+export default class OrderItem extends React.Component {
     constructor(props){
         super(props);
         this.state={
             product: null,
-            qty: parseInt(props.item.item.quantity),
-            price: parseInt(props.item.item.price)
+            qty: parseInt(props.item.quantity),
+            price: parseInt(props.item.price)
         }
-        getProductById(props.item.item.id_product)
+        getProductById(props.item.id_product)
         .then(res => this.setState({product: res}))
         .catch(err => console.log(err))
     }
@@ -44,7 +44,7 @@ export default class CartItem extends React.Component {
     }
 
     render(){
-        const item = this.props.item.item;
+        const item = this.props.item;
         const {
             productStyle, mainRight, productController,
             txtName, txtPrice, productImage, numberOfProduct,
@@ -56,9 +56,6 @@ export default class CartItem extends React.Component {
                     <View style={[mainRight]}>
                         <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
                             <Text style={txtName}>{this.state.product && this.toTitleCase(this.state.product?.name)}</Text>
-                            <TouchableOpacity onPress={() => this.deleteItem(item.id)}>
-                                <Text style={{ fontSize: 20, color: '#969696' }}>X</Text>
-                            </TouchableOpacity>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             <Text style={txtPrice}>{this.state.price}$</Text>
@@ -69,15 +66,7 @@ export default class CartItem extends React.Component {
                         </View>
                         <View style={productController}>
                             <View style={numberOfProduct}>
-                                <TouchableOpacity 
-                                    onPress={() => [this.setState({qty: this.state.qty -1, price: parseInt(this.state.price) - parseInt(this.state.product.price)}), this.props.parent.update_cart(item.id, this.state.qty-1, parseInt(this.state.price) - parseInt(this.state.product.price) )]}
-                                    disabled={this.state.qty == 1 ? true : false}>
-                                    <Text style={{ color: 'black', fontSize: 18, padding: 5 }}>-</Text>
-                                </TouchableOpacity>
-                                <Text style={{ color: 'black' }}>{this.state.qty}</Text>
-                                <TouchableOpacity onPress={() => [this.setState({qty: this.state.qty + 1, price: parseInt(this.state.price) + parseInt(this.state.product.price)}), this.props.parent.update_cart(item.id, this.state.qty+1, parseInt(this.state.price) + parseInt(this.state.product.price) )]}>
-                                    <Text style={{ color: 'black', fontSize: 18, padding: 5 }}>+</Text>
-                                </TouchableOpacity>
+                                <Text style={{ color: 'black' }}>Quantity: {this.state.qty}</Text>
                             </View>
                             <TouchableOpacity style={showDetailContainer} onPress={() => this.props.parent.props.navigation.navigate('ProductDetail' , { product: this.state.product })}>
                                 <Text style={txtShowDetail}>SHOW DETAILS</Text>
@@ -130,9 +119,9 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
-        borderWidth: 1,
-        borderRadius: 8, 
-        marginLeft: 20,
+        // borderWidth: 1,
+        // borderRadius: 8, 
+        // marginLeft: 20,
         borderColor: '#A7A7A7',
         alignItems: 'center'
     },
